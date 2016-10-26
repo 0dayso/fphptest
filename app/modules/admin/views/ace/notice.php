@@ -25,7 +25,7 @@
     }
 
     $(function () {
-        setInterval(refresh(), 1000 * 10);
+        setInterval("refresh()", 1000 * 10);
     });
     
     function refresh() {
