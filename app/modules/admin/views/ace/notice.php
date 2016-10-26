@@ -33,11 +33,11 @@
             function (data) {
 
                 if(data.status == 'err'){
-                    $('#noticeItems').append('<p>[' + new Date().Format("yyyy-month-dd hh:mm:ss") + ']未获取新消息</p>');
+                    $('#noticeItems').append('<p>[' + new Date().Format("yyyy-MM-dd hh:mm:ss") + ']未获取新消息</p>');
                     return;
                 }
 
-                $('#noticeItems').append('<p>[' + new Date().Format("yyyy-month-dd hh:mm:ss") + ']有新消息</p>');
+                $('#noticeItems').append('<p style="color:red;">[' + new Date().Format("yyyy-MM-dd hh:mm:ss") + ']有新消息</p>');
                 playBell();
             }, 'json');
     }
