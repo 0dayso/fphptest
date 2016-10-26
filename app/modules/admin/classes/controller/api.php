@@ -9,7 +9,7 @@
 namespace admin;
 
 
-class Api extends \Controller_Rest
+class Controller_Api extends \Controller_Rest
 {
     public function action_new_msg(){
         $this->response([
