@@ -40,6 +40,10 @@ class Controller_Home extends \Controller_BaseController{
 		//$this->template->content = \View::forge('ace/page/500');
 	}
 
+	public function action_notice(){
+	    $this->template->content = \View::forge('ace/notice');
+    }
+
 	public function action_login(){
 		\View::set_global(
 			array('menu' => 'admin-home', 
