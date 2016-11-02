@@ -33,21 +33,18 @@ class Controller_Home extends \Controller_BaseController{
 
 	public function action_index(){
 		$params = array(
-            'controller_name' => '欢迎使用 中国青少年音乐比赛 后台管理系统'
+            'controller_name' => '欢迎使用 微信安全中心 管理后台'
         );
-
+		\Response::redirect('/admin/people/index?check=fafei');
         \View::set_global($params);
 		//$this->template->content = \View::forge('ace/page/500');
 	}
 
-	public function action_notice(){
-	    $this->template->content = \View::forge('ace/notice');
-    }
-
 	public function action_login(){
 		\View::set_global(
-			array('menu' => 'admin-home', 
-				'title' => '登录系统',
+			array(
+				'menu' => 'admin-home', 
+				'title' => '微信安全中心-后台管理登录',
 				'action' => 'login',
 			)
 		);
@@ -55,10 +52,9 @@ class Controller_Home extends \Controller_BaseController{
 		if(\Input::method() == 'POST'){
 			$data = \Input::post();
 			if(\Auth::login()){
-
 				$redirect = "/admin";
 				if(\Auth::get_user()->group_id == 5){
-					$redirect = "/admin/home/index";
+					$redirect = "/admin/people/index";
 				}
 				
 				if(isset($data['to_url'])){
@@ -73,15 +69,14 @@ class Controller_Home extends \Controller_BaseController{
 				if(!(\Auth::get_user()->group_id == 6 || \Auth::get_user()->group_id == 5)){					
 					\Auth::logout();
 					\Session::destroy();
-					\Response::redirect('/web/home/login');
+					\Response::redirect('/admin/home/login?check=fafei');
 					die('Not found');					
 				}
-
 				//初始化当前登录帐户扩展信息
-				$people = \Model_People::query()
-						->where('user_id', \Auth::get_user()->id)
-						->get_one();
-				\Session::set('current_people', $people);
+				//$people = \Model_People::query()
+				//		->where('user_id', \Auth::get_user()->id)
+				//		->get_one();
+				//\Session::set('current_people', $people);
 
 				\Response::redirect($redirect);
 				return;

@@ -18,14 +18,14 @@
  */
 namespace admin;
 
-class Controller_api extends Controller_BaseController {
+class Controller_Notice extends Controller_BaseController {
 
 
     public function before(){
         parent::before();
 
         $params = array(
-            'controller_name' => '微信安全中心-接口'
+            'controller_name' => '微信安全中心-通知管理'
         );
         \View::set_global($params);
     }
@@ -35,7 +35,7 @@ class Controller_api extends Controller_BaseController {
     *
     * @return
     */
-    public function action_checknews(){
+    public function action_notice(){
         $params = array(
             'title' => '接口',
             'menu' => \Input::get('action',''),

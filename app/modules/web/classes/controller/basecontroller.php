@@ -39,7 +39,7 @@ class Controller_BaseController extends \Controller_BaseController {
     public function before(){
 
     	parent::before();
-
+/*
         //读取全局配置项
         $this->init_global_params();
         $options = \Session::get('GLOBAL_OPTIONS');
@@ -63,7 +63,7 @@ class Controller_BaseController extends \Controller_BaseController {
         }
         //\Response::redirect($new_url_en);
         //\Session::set('lang', 'cn');
-        \View::set_global('GLOBAL_OPTIONS', $options);
+        \View::set_global('GLOBAL_OPTIONS', $options);*/
     }
 
 

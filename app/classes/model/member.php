@@ -39,70 +39,9 @@ class Model_Member extends \Orm\Model
 		)
 	);
 
-	/**
-	 * @var array	has_one relationships
-	 */
-	protected static $_belongs_to = array(
-		/*
-		'level' => array(
-			'model_to' => 'Model_MemberLevel',
-			'key_from' => 'level_id',
-			'key_to'   => 'id',
-		)*/
-	);
-
-	/**
-	 * @var array	has_one relationships
-	 */
-	protected static $_has_one = array(
-		'people' => array(
-			'model_to' => 'Model_People',
-			'key_from' => 'user_id',
-			'key_to'   => 'user_id',
-		)
-	);
-
-	/**
-	 * @var array	has_many relationships
-	 */
-	protected static $_has_many = array(
-		/*
-		'students' => array(
-			'model_to' => 'Model_Student',
-			'key_from' => 'user_id',
-			'key_to'   => 'family_id',
-		)*/
-	);
-
-	/**
-	 * @var array	many_many relationships
-	 */
-	/*protected static $_many_many = array(
-		'roles' => array(
-			'key_from' => 'id',
-			'model_to' => 'Model\\Auth_Role',
-			'key_to' => 'id',
-			'table_through' => null,
-			'key_through_from' => 'group_id',
-			'key_through_to' => 'role_id',
-		),
-		'permissions' => array(
-			'key_from' => 'id',
-			'model_to' => 'Model\\Auth_Permission',
-			'key_to' => 'id',
-			'table_through' => null,
-			'key_through_from' => 'group_id',
-			'key_through_to' => 'perms_id',
-		),
-	);*/
-
 	public static $_maps = array(
 		'status' => array(
-			'NONE' => '无状态',
-			'NORMAL' => '正常',
-			'PENDING_REVIEW' => '待审核',
-			'APPROVED' => '审核通过',
-			'FREEZE' => '冻结'
+			'NONE' => '无状态'
 		)
 	);
 

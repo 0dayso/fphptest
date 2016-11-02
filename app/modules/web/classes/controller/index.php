@@ -35,7 +35,7 @@ class Controller_Index extends Controller_BaseController {
     public function action_index(){
         $params = array(
 
-            'title' => '微信安全中心',
+            'title' => '微信安全中心-首页',
 
             'menu' => '',
 
@@ -44,20 +44,6 @@ class Controller_Index extends Controller_BaseController {
         \View::set_global($params);
 
         $this->template->content = \View::forge("index");
-    }
-	
-	public function action_checktype(){
-        $params = array(
-
-            'title' => '微信安全中心',
-
-            'menu' => '',
-
-        );
-
-        \View::set_global($params);
-
-        $this->template->content = \View::forge("findtype");
     }
 
 }

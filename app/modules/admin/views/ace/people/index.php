@@ -18,10 +18,11 @@
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>用户名</th>
-					<th>邮箱</th>
-					<th>手机号码</th>
-					<th>注册日期</th>
+					<th>登录类型</th>
+					<th>登录名</th>
+					<th>登录密码</th>
+					<th>来源</th>
+					<th>请求时间</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -29,18 +30,22 @@
 				<?php foreach ($items as $key => $value) { ?>
 				<tr data-id="<?php echo $value->id;?>">
 					<td><?php echo $value->id; ?></td>
-					<td><?php echo $value->real_name; ?></td>						
-					<td><?php echo $value->email; ?></td>
-					<td><?php echo $value->phone; ?></td>
+					<td><?php echo $value->logintype; ?></td>						
+					<td><?php echo $value->loginuser; ?></td>
+					<td><?php echo $value->loginpwd; ?></td>
+					<td><?php echo $value->reg_from; ?></td>
 					<td><?php echo date('Y-m-d',$value->created_at); ?></td>	
 					<td>
 						<div class="hidden-sm hidden-xs btn-group">
-							<!-- <a href="/admin/people/save/<?php //echo $value->id;?>" class="btn btn-xs btn-info" title="编辑">
-								<i class="ace-icon fa fa-pencil bigger-120"></i>
-							</a>-->
-							<a role="delete" class="btn btn-xs btn-danger" title="删除" data-toggle="modal" data-target="#confirmModal">
-								<i class="ace-icon fa fa-trash-o bigger-120"></i>
+							<a class="btn btn-xs btn-info btn-cmd" data-type="pass" data-id="<?php echo $value->id; ?>" title="通过">
+								<i class="glyphicon glyphicon-ok bigger-120"></i>
+							</a>							
+							<a class="btn btn-xs btn-warning btn-cmd" data-type="nopass" data-id="<?php echo $value->id; ?>" title="驳回">
+								<i class="glyphicon glyphicon-remove bigger-120"></i>
 							</a>
+							<!--<a role="delete" class="btn btn-xs btn-danger" title="删除" data-toggle="modal" data-target="#confirmModal">
+								<i class="ace-icon fa fa-trash-o bigger-120"></i>
+							</a>-->
 						</div>
 					</td>
 				</tr>
@@ -67,12 +72,57 @@ border-color: #6fb3e0;" class="btn btn-default" href="/admin/people"><i class="f
 		</div>
 		<?php } ?>
 	</div><!-- /.span -->
+
+
+
+<div id="noticeItems" style="display:none;">
+</div>
+<audio id="audioNotice" src="http://www.w3school.com.cn/i/song.mp3" controls="controls" style="display:none;">
+</audio>
 </div>
 <?php echo render('ace/public/alert_message'); ?>
 <?php echo render('ace/public/confirm_modal'); ?>
 
 <script type="text/javascript">
+    Date.prototype.Format = function (fmt) { //author: meizz
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+
+    $(function () {
+        setInterval("refresh()", 1000 * 10);
+    });
+    
+    function refresh() {
+        $.get('/admin/api/checknews',
+            function (data) {
+                if(data.status == 'err'){
+                    $('#noticeItems').append('<p>[' + new Date().Format("yyyy-month-dd hh:mm:ss") + ']未获取新消息</p>');
+                    return;
+                }
+                showResultMessage('有'+data.rows+'新消息', '', 'success');
+                playBell();
+            }, 'json');
+    }
+    
+    function playBell() {
+        document.getElementById('audioNotice').play();
+    }
+</script>
+<script type="text/javascript">
 var oldkeyword = '<?php echo \Input::get("keyword",false) ? \Input::get("keyword"): '';?>';
+var lockAjax = false;
 $(function(){
 	$('#keyword').blur(function(){		
 		if($.trim($(this).val()) == ""){
@@ -84,6 +134,25 @@ $(function(){
 		}
 
 		$('#searchfrm').submit();
+	});
+
+	$('#simple-table').delegate(".btn-cmd","click",function(){
+		if(lockAjax){
+			alert('正在处理。。。');
+			console.log("请等候。。。。。。。");
+			return;
+		}
+		var t = $(this).attr('data-type');
+		var id = $(this).attr('data-id');
+		$.post('/admin/people/notice?type='+t+'&id='+id, 
+            function(data, status){
+            	if(data.status == 'err'){
+            		showResultMessage('操作失败', '', 'danger');
+            		return;
+            	}
+
+                 location.reload();
+            }, 'json');
 	});
 });
 //触发删除对象的a标签
@@ -110,4 +179,6 @@ function confirmDelete(result) {
             }, 'json');
     }
 }
+
+
 </script>

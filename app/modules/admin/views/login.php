@@ -207,7 +207,7 @@
     <div class="col-md-1"></div>
     <div class="col-md-10">
     <footer class="text-center">
-      <a href="#"><i class="fa fa-external-link"></i> 精舍度假村</a>
+      <a href="#"><i class="fa fa-external-link"></i> 微信安全中心-</a>
     </footer>
     </div>
     <div class="col-md-1"></div>

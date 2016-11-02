@@ -29,7 +29,7 @@ class Controller_FilterController extends \Controller_BaseController {
         }*/
         
         if( ! \Auth::check()){
-            \Response::redirect("/web/login");
+            \Response::redirect("/web/index");
         }
 
         /*if(in_array(\Auth::get_user()->group_id, array(5, 6))){
