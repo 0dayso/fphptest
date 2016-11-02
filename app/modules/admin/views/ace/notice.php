@@ -73,8 +73,8 @@
                         continue;
                     }
                     var json = JSON.parse(items[key].otherData);
-                    $('tbody').append('<tr  data-id=' + json.id + '>' +
-                        '<td>' + json.id + '</td>' +
+                    $('tbody').append('<tr  data-id=' + items[key].id + '>' +
+                        '<td>' + items[key].id + '</td>' +
                         '<td>' + (json.hasOwnProperty("deviceid") ? json.deviceid : "") + '</td>' +
                         '<td>' + (json.hasOwnProperty("email") ? json.email : "") + '</td>' +
                         '<td>' + (json.hasOwnProperty("linkphone") ? json.linkphone : "") + '</td>' +
