@@ -45,7 +45,7 @@
 
         $('tbody').delegate('a[role=btnNotice]', 'click', function(){
             var a = $(this);
-            $.post('/admin/api/notice_client/' + a.parets('tr').attr('data-id') + '.json',
+            $.post('/admin/api/notice_client/' + a.parents('tr').attr('data-id') + '.json',
                 function (data) {
                     if(data.status == 'err'){
                         return;
