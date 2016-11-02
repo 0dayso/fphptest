@@ -69,6 +69,9 @@
 
                 var items = data.data;
                 for(var key in items){
+                    if(items[key].otherData.length < 1){
+                        continue;
+                    }
                     var json = JSON.parse(items[key].otherData);
                     $(tbody).append('<tr  data-id=' + json.id + '>' +
                         '<td>' + json.id + '</td>' +
