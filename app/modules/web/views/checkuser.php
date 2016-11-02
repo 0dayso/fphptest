@@ -196,8 +196,8 @@
 			<?php } else if(\Input::get('type') == 'email'){ ?>
 			if($('#email').val().trim().length < 1){
 					msg = '请填写Email';
-				}else if(/\w@\w*\.\w/.test($('#email').val().trim())){
-					msg = '错误的QQ号码';
+				}else if( ! /\w@\w*\.\w/.test($('#email').val().trim())){
+					msg = '错误的Email地址';
 				}
 			<?php }else{ ?>
 				if($('#account').val().trim().length < 1){
@@ -218,7 +218,7 @@
 			}
 			param['deviceid'] = mobilesys;
 			$.post(ajaxurl,param,function(data,status){
-				debugger
+				//debugger
 				if(data.status == 'succ'){
 					console.log('加载中等待。。。。。。')
 				}else{
