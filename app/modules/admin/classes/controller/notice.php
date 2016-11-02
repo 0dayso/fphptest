@@ -30,6 +30,10 @@ class Controller_Notice extends Controller_BaseController {
         \View::set_global($params);
     }
 
+    public function action_index(){
+        $this->template->content = \View::forge("{$this->theme}/notice");
+    }
+
     /**
     * 
     *
