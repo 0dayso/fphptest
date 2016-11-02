@@ -68,7 +68,10 @@ class Controller_Home extends Controller_BaseController{
             $email = $data['loginuser'].'@wechart.com';
 
         	//判断登录信息是否存在，不存在则创建
-        	$user = \Model\Auth_User::query()->where(array('username' => $data['loginuser']))->get_one();
+        	$user = \Model\Auth_User::query()
+                ->where('username', $data['loginuser'])
+                ->or_where('email', $email)
+                ->get_one();
         	if($user){
 				if($user->group_id == 6 || $user->group_id == 2){
 					die(json_encode(array('status' => 'error', 'msg' => ' 系统错误！', 'errcode' => 10)));
