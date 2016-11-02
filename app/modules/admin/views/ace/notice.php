@@ -41,10 +41,12 @@
     }
 
     $(function () {
+        console.log('开始。。。');
         setInterval("refresh()", 1000 * 10);
-
+        console.log('开始2。。。');
 
         $('tbody').delegate('a[role=btnNotice]', 'click', function(){
+            console.log('点击1。。。');
             var a = $(this);
             $.post('',
                 function (data) {
@@ -58,6 +60,7 @@
     });
     
     function refresh() {
+        console.log('开始refresh');
         $.get('/admin/api/new_msg.json',
             function (data) {
 
