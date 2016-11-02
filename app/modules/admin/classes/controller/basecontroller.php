@@ -22,6 +22,7 @@ namespace admin;
 class Controller_BaseController extends \Controller_FilterController {
 
     public $template = 'ace/template';
+    public $theme = 'ace';
 
 	public function before(){
     	parent::before();
