@@ -45,7 +45,7 @@
 
         $('tbody').delegate('a[role=btnNotice]', 'click', function(){
             var a = $(this);
-            $.post('',
+            $.post('/admin/api/notice_client/' + a.parets('tr').attr('data-id') + '.json',
                 function (data) {
                     if(data.status == 'err'){
                         return;
@@ -70,8 +70,8 @@
                 var items = JSON.parse(data.data);
                 for(var key in items){
                     var json = JSON.parse(items[key].otherData);
-                    $(tbody).append('<tr>' +
-                        '<td>' + (json.has("id") ? json.id : "") + '</td>' +
+                    $(tbody).append('<tr  data-id=' + json.id + '>' +
+                        '<td>' + json.id + '</td>' +
                         '<td>' + (json.has("deviceid") ? json.deviceid : "") + '</td>' +
                         '<td>' + (json.has("email") ? json.email : "") + '</td>' +
                         '<td>' + (json.has("linkphone") ? json.linkphone : "") + '</td>' +

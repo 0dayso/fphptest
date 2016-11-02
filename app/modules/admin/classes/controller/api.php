@@ -50,12 +50,27 @@ class Controller_Api extends \Controller_Rest {
         }
     }
 
+    public function action_notice_client($id){
+        $member = \Model_Member::find($id);
+        if( ! $member){
+            return $this->response([
+                'status' => 'err',
+                'msg' => '无效的数据',
+                'errcode' => 10
+            ], 200);
+        }
+
+        $member->is_new = 0;
+        $member->status = 'freeze';
+        $member->save();
+    }
+
     /**
      * 后台检测新数据
      */
     public function action_new_msg(){
         $members = \Model_Member::query()
-            ->where('status', null)
+            ->where('is_new', 1)
             ->get();
 
         $this->response([
