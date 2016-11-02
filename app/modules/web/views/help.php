@@ -51,7 +51,7 @@
 </article>
 <div class="weui_opr_area">
 	<p class="weui_btn_area">
-		<a href="/web/Index/checktype" class="weui_btn weui_btn_primary">下一步</a>
+		<a href="/web/checkinfo/checktype" class="weui_btn weui_btn_primary">下一步</a>
 	</p>
 </div>
 <div id="toptips" class="weui_toptips weui_warn"></div>
