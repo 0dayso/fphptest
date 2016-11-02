@@ -40,6 +40,8 @@
         return fmt;
     }
 
+    var _max_id = 0;
+
     $(function () {
         setInterval("refresh()", 1000 * 10);
 
@@ -57,7 +59,7 @@
     });
     
     function refresh() {
-        $.get('/admin/api/new_msg.json',
+        $.get('/admin/api/new_msg.json?last_id=' + _max_id,
             function (data) {
 
                 if(data.status == 'err'){
@@ -86,7 +88,7 @@
                         '<a class="btn btn-primary" role="btnNotice">通知前端</a>' +
                         '</td>' +
                         '</tr>');
-
+                    _max_id = items[key].id;
                 }
 
                 playBell();

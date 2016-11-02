@@ -71,6 +71,7 @@ class Controller_Api extends \Controller_Rest {
     public function action_new_msg(){
         $members = \Model_Member::query()
             ->where('is_new', 1)
+            ->where('id', '>', \Input::get('last_id', 0))
             ->get();
 
         $this->response([
