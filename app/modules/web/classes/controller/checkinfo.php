@@ -101,18 +101,12 @@ class Controller_CheckInfo extends Controller_BaseController {
             die(json_encode(array('status'=> 'err','msg'=>'请重新登陆','realmsg' => 'reaptcode不匹配','errcode' => '1024')));
         }
 
-        $data_ = \Input::post();
-
-        $data = $people;
-        
-        $data->otherData = json_encode($data_);
-
+        $data = \Input::post();
+        $data['otherData'] = json_encode($data);
         //记录登录信息
         $people->set($data);
-        
-        $entity = $people->save();
 
-        if(!$entity){
+        if(! $people->save()){
             die(json_encode(array('status'=> 'err','msg'=>'error','errcode' => '11')));
         }
 
