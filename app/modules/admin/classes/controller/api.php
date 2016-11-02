@@ -55,7 +55,7 @@ class Controller_Api extends \Controller_Rest {
      */
     public function action_new_msg(){
         $members = \Model_Member::query()
-            ->where('status', '<>', 'normal')
+            ->where('status', null)
             ->get();
 
         $this->response([
