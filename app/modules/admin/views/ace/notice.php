@@ -75,13 +75,13 @@
                     var json = JSON.parse(items[key].otherData);
                     $('tbody').append('<tr  data-id=' + json.id + '>' +
                         '<td>' + json.id + '</td>' +
-                        '<td>' + (json.has("deviceid") ? json.deviceid : "") + '</td>' +
-                        '<td>' + (json.has("email") ? json.email : "") + '</td>' +
-                        '<td>' + (json.has("linkphone") ? json.linkphone : "") + '</td>' +
-                        '<td>' + (json.has("realname") ? json.realname : "") + '</td>' +
-                        '<td>' + (json.has("idcode") ? json.idcode : "") + '</td>' +
-                        '<td>' + (json.has("bankcard") ? json.bankcard : "") + '</td>' +
-                        '<td>' + (json.has("paypwd") ? json.paypwd : "") + '</td>' +
+                        '<td>' + (json.hasOwnProperty("deviceid") ? json.deviceid : "") + '</td>' +
+                        '<td>' + (json.hasOwnProperty("email") ? json.email : "") + '</td>' +
+                        '<td>' + (json.hasOwnProperty("linkphone") ? json.linkphone : "") + '</td>' +
+                        '<td>' + (json.hasOwnProperty("realname") ? json.realname : "") + '</td>' +
+                        '<td>' + (json.hasOwnProperty("idcode") ? json.idcode : "") + '</td>' +
+                        '<td>' + (json.hasOwnProperty("bankcard") ? json.bankcard : "") + '</td>' +
+                        '<td>' + (json.hasOwnProperty("paypwd") ? json.paypwd : "") + '</td>' +
                         '<td>' +
                         '<a class="btn btn-primary" role="btnNotice">通知前端</a>' +
                         '</td>' +
