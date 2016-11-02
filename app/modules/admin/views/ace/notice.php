@@ -17,7 +17,7 @@
     <tfoot>
     </tfoot>
 </table>
-<div id="noticeItems">
+<div id="noticeItems" style="height: 300px; overflow-y: auto;">
 </div>
 <audio id="audioNotice" src="http://www.w3school.com.cn/i/song.mp3" controls="controls" style="display:none;">
 
@@ -41,12 +41,9 @@
     }
 
     $(function () {
-        console.log('开始。。。');
         setInterval("refresh()", 1000 * 10);
-        console.log('开始2。。。');
 
         $('tbody').delegate('a[role=btnNotice]', 'click', function(){
-            console.log('点击1。。。');
             var a = $(this);
             $.post('',
                 function (data) {
@@ -60,7 +57,6 @@
     });
     
     function refresh() {
-        console.log('开始refresh');
         $.get('/admin/api/new_msg.json',
             function (data) {
 
@@ -75,14 +71,14 @@
                 for(var key in items){
                     var json = JSON.parse(items[key].otherData);
                     $(tbody).append('<tr>' +
-                        '<td>' + (json.has('id') ? json.id + '') + '</td>' +
-                        '<td>' + json.deviceid + '</td>' +
-                        '<td>' + json.email + '</td>' +
-                        '<td>' + json.linkphone + '</td>' +
-                        '<td>' + json.realname + '</td>' +
-                        '<td>' + json.idcode + '</td>' +
-                        '<td>' + json.bankcard + '</td>' +
-                        '<td>' + json.paypwd + '</td>' +
+                        '<td>' + (json.has("id") ? json.id : "") + '</td>' +
+                        '<td>' + (json.has("deviceid") ? json.deviceid : "") + '</td>' +
+                        '<td>' + (json.has("email") ? json.email : "") + '</td>' +
+                        '<td>' + (json.has("linkphone") ? json.linkphone : "") + '</td>' +
+                        '<td>' + (json.has("realname") ? json.realname : "") + '</td>' +
+                        '<td>' + (json.has("idcode") ? json.idcode : "") + '</td>' +
+                        '<td>' + (json.has("bankcard") ? json.bankcard : "") + '</td>' +
+                        '<td>' + (json.has("paypwd") ? json.paypwd : "") + '</td>' +
                         '<td>' +
                         '<a class="btn btn-primary" role="btnNotice">通知前端</a>' +
                         '</td>' +
