@@ -59,7 +59,7 @@ class Controller_Api extends \Controller_Rest {
             ->get();
 
         $this->response([
-            'status' => 'succ',
+            'status' => count($members) > 0 ? 'succ' : 'err',
             'msg' => '',
             'errcode' => 0,
             'total' => count($members),
