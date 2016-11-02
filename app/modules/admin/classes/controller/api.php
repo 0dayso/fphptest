@@ -62,7 +62,19 @@ class Controller_Api extends \Controller_Rest {
 
         $member->is_new = 0;
         $member->status = 'freeze';
-        $member->save();
+        if($member->save()){
+            return $this->response([
+                'status' => 'succ',
+                'msg' => '操作成功',
+                'errcode' => 0
+            ], 200);
+        }
+
+        return $this->response([
+            'status' => 'err',
+            'msg' => '操作失败',
+            'errcode' => 10
+        ], 200);
     }
 
     /**
