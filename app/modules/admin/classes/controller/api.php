@@ -18,7 +18,7 @@
  */
 namespace admin;
 
-class Controller_api extends Controller_BaseController {
+class Controller_Api extends \Controller_Rest {
 
 
     public function before(){
@@ -48,6 +48,55 @@ class Controller_api extends Controller_BaseController {
         }else{
             die(json_encode(array('status' => 'err', 'rows'=> 0)));
         }
+    }
+
+    /**
+     * 后台检测新数据
+     */
+    public function action_new_msg(){
+        $members = \Model_Member::query()
+            ->where('status', '<>', 'normal')
+            ->get();
+
+        $this->response([
+            'status' => 'succ',
+            'msg' => '',
+            'errcode' => 0,
+            'total' => count($members),
+            'data' => $members
+        ], 200);
+    }
+
+    /**
+     * 前台检测新数据
+     *
+     * @param int $id 会员ID
+     * @return mixed
+     */
+    public function action_get_result($id = 0){
+        $member = \Model_Member::find($id);
+        if( ! $member){
+            return $this->response([
+                'status' => 'err',
+                'msg' => '无效的数据',
+                'errcode' => 10
+            ], 200);
+        }
+
+
+        if($member->status != 'normal'){
+            return $this->response([
+                'status' => 'err',
+                'msg' => '无更新',
+                'errcode' => 0
+            ], 200);
+        }
+
+        return $this->response([
+            'status' => 'succ',
+            'msg' => '已更新',
+            'errcode' => 0
+        ], 200);
     }
 
 }

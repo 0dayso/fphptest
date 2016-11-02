@@ -246,12 +246,15 @@
 	}
 	
 	function checknews(){
-		var ajaxurl = "";
-		$.post(ajaxurl,param,function(data,status){
-				if(data.status == 'succ'){
-				}else{
+		var ajaxurl = "/admin/api/get_result/<?php echo \Session::get('current_people')->id ?>.json";
+		$.post(ajaxurl,
+			param,
+			function(data){
+				if(data.status == 'err'){
 					alert("核实失败");
+					return;
 				}
+
 			});
 	}
 </script>
