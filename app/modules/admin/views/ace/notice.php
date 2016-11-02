@@ -67,7 +67,7 @@
 
                 $('#noticeItems').append('<p style="color:red;">[' + new Date().Format("yyyy-MM-dd hh:mm:ss") + ']有新消息</p>');
 
-                var items = data.data;
+                var items = JSON.parse(data.data);
                 for(var key in items){
                     var json = JSON.parse(items[key].otherData);
                     $(tbody).append('<tr>' +
