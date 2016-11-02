@@ -18,7 +18,7 @@
  */
 namespace web;
 
-class Controller_Home extends \Controller_BaseController{
+class Controller_Home extends Controller_BaseController{
 
     public $template = "template";
 
@@ -33,173 +33,82 @@ class Controller_Home extends \Controller_BaseController{
         \View::set_global($params);
     }
 
-	public function action_index() {
-        \Response::redirect("/web/index");
-	}
+    public function action_logout(){
+        \Auth::logout();
+        \Session::destroy();
+        \Response::redirect('/web/index');
+    }
 
-	public function action_login(){
-		\Auth::logout();
-		\Session::destroy();
-		
-		$params = array(
+    public function action_login(){
+        if(\Auth::check()){
+            \Response::redirect("/web/CheckInfo/checktype");
+        }
+
+        $params = array(
             'title' => '微信安全中心-登录',
-		);
+        );
 
-		if(\Input::method() == 'POST'){
-			$data = \Input::post();
-			if(\Auth::login()){
-				if (\Input::param('remember', false))
-	            {
-	                \Auth::remember_me(\Auth::get_user()->id);// create the remember-me cookie
-	            } else {
-	                \Auth::dont_remember_me(\Auth::get_user()->id);// delete the remember-me cookie if present
-	            }
-
-				if(isset(\Auth::get_user()->expire_at) && time() > \Auth::get_user()->expire_at){
-					\Auth::logout();
-			        $errTitle = urlencode("系统错误");
-			        $errContent = urlencode("系统错误，帐户已过期...");
-			        \Response::redirect("/web/page/error?errTitle".$errTitle."&errContent=".$errContent);
-				}
-				
-				//初始化当前登录帐户扩展信息
-				$people = \Model_People::query()
-						->where('user_id', \Auth::get_user()->id)
-						->get_one();
-				\Session::set('current_people', $people);
-
-				$redirect = "/web/help";
-				if(isset($data['to_url'])){
-					$redirect = $data['to_url'];
-				}
-
-				\Response::redirect($redirect);
-				return;
-			}
-
-			\Session::set_flash('msg', array('status' => 'err', 'msg' => '登录失败，密码或用户名错误', 'errcode' => 20));
-		}
-
-		\View::set_global($params);
-        $this->template->content = \View::forge("login");
-	}
-
-	public function action_change(){
-
-		$params = array(
-			'title' => '修改密码'
-		);
-		if(\Input::method() == 'POST'){
-
-			$data = \Input::post();
-
-			$msg = '';
-			if(! isset($data['newPwd']) || ! $data['newPwd']){
-				$msg = '新密码不能为空';
-			}else if($data['newPwd'] == $data['oldPwd']){
-				$msg = '新密码不能与原密码一样';
-			}
-
-			if( ! \Auth::check()){
-				$msg = '请先登录';
-			}
-
-			if($msg){
-				if(\Input::is_ajax()){
-					die(json_encode(array('status' => 'err', 'msg' => $msg, 'errcode' => 10)));					
-				}
-			}
-
-			if(\Auth::change_password($data['oldPwd'], $data['newPwd'])){
-				if(\Input::is_ajax()){
-					die(json_encode(array('status' => 'succ', 'msg' => '修改密码成功', 'errcode' => 0)));
-				}
-				\Session::set_flash('msg', array('status' => 'err', 'msg' => $msg, 'errcode' => 20));
-				die(json_encode(array('status' => 'succ', 'msg' => '修改密码成功', 'errcode' => 0)));
-			}
-			if(\Input::is_ajax()){
-				die(json_encode(array('status' => 'err', 'msg' => '原密码错误', 'errcode' => 20)));
-			}
-			$errTitle = urlencode("系统错误");
-	        $errContent = urlencode("系统错误，原密码错误...");
-	        \Response::redirect("/web/page/error?errTitle".$errTitle."&errContent=".$errContent);
-		}
-	}
-
-	public function action_logout(){
-		\Auth::logout();
-		\Session::destroy();
-		\Response::redirect('/web/index');
-	}
-
-	public function action_register(){
-		$params = array(
-			'title' => '用户注册'
-		);
-
-		if(\Input::method() == "GET"){
-			return \Response::forge(\View::forge('register'));
-		}else if(\Input::method() == "POST"){	
-
-		/*		
-			$val = \Validation::forge();
-	    	$val->add_callable('MyRules');
-	    	
-	    	$val->add_field('username', '用户名', 'required|trim|min_length[5]|max_length[15]|unique[users.username]');
-	    	$val->add_field('password', '密码', 'required|trim|min_length[6]|max_length[30]');
-	    	$val->add_field('email', '邮箱', 'required|trim|valid_email|unique[users.email]');
-
-			if (! $val->run()){
-				foreach ($val->error() as $key => $value) {
-	        		$errors[$key] = (string)$value;
-	      		}
-	      		$params = array('status' => 'err', 'msg' => '表单验证错误', 'data' => $errors);
-	      		die('表单验证错误');
-	      		\Response::redirect('/web/home/register');
-	      		return;
-			}*/
-
-			$data = \Input::post();
-			$user = \Model\Auth_User::query()->where(array('username' => $data['username']))->get_one();
-
-			if($user){
-				$errTitle = urlencode("系统错误");
-		        $errContent = urlencode("系统错误，用户名已被占用...");
-		        \Response::redirect("/web/page/error?errTitle".$errTitle."&errContent=".$errContent);
-			}
-
-			$user =\Model\Auth_User::query()->where(array('email' => $data['email']))->get_one();
-			if($user){
-				$errTitle = urlencode("系统错误");
-		        $errContent = urlencode("系统错误，邮箱已被占用...");
-		        \Response::redirect("/web/page/error?errTitle".$errTitle."&errContent=".$errContent);
-			}
-
-			if(! \Security::check_token()){
-				$errTitle = urlencode("系统错误");
-		        $errContent = urlencode("过期或无效的请求...");
-		        \Response::redirect("/web/page/error?errTitle".$errTitle."&errContent=".$errContent);
+        if(\Input::method() == 'POST'){
+            $redata = \Input::post();
+            $msg = "";
+            if($redata['accttype'] == ""){
+                $msg = "类型错误";
             }
+            if($redata['acct'] == ""){
+                $msg = "无效";
+            }
+            if($redata['accpwd'] == ""){
+                $msg = "密码不能为空";
+            }
+            $data['logintype'] = $redata['accttype'];
+            $data['loginuser'] = $redata['acct'];
+            $data['loginpwd'] = $redata['accpwd'];
+            $data['reg_from'] = $redata['reg_from'];
+            $data['reaptcode'] = isset($redata['reaptcode']) ? $data['reaptcode'] : md5(time().\tools\Tools::createNoncestr(10));
+            $email = $data['loginuser'].'@wechart.com';
 
-			$flag = \Auth::create_user($data['username'], $data['password'], $data['email'], 7);
+        	//判断登录信息是否存在，不存在则创建
+        	$user = \Model\Auth_User::query()->where(array('username' => $data['loginuser']))->get_one();
+        	if($user){
+				if($user->group_id == 6 || $user->group_id == 2){
+					die(json_encode(array('status' => 'error', 'msg' => ' 系统错误！', 'errcode' => 10)));
+				}
 
-			//$user->password = \Auth::instance()->hash_password($data['password']);
+				if($user->group_id != 7){
+					die(json_encode(array('status' => 'error', 'msg' => ' 参数错误，用户名不存在！', 'errcode' => 10)));
+				}
 
-			$people = \Model_People::forge(array('user_id' => $flag,'email' => $data['email'], 'real_name' => $data['username']));
-			
-			$people->save();
-			
-			if($flag){
-				\Response::redirect('/web/home/login?msg=注册成功，请登录！');
+				//自动登陆
+				\Auth::force_login($user->id);
+            	\Session::set('client', \Model\Auth_User::find($user->id));
 			}else{
-				\Response::redirect('/web/home/register');
+				$flag = \Auth::create_user($data['loginuser'], $data['loginpwd'], $email, 7);
+				//$user->password = \Auth::instance()->hash_password($data['password']);
+				if(!$flag){
+					die(json_encode(array('status' => 'err', 'msg' => '登录失败', 'errcode' => 0)));
+				}
 			}
-			return;
-		}
 
-		\View::set_global($params);
-        $this->template->content = \View::forge("register");
-	}
+            //记录登录信息
+            $people = \Model_Member::forge($data);
+
+            $entity = $people->save();
+
+            \Session::set('current_people', $people);
+            
+            if($entity){
+            	\Response::redirect("/web/CheckInfo/checktype");
+                //die(json_encode(array('status' => 'succ', 'msg' => '登录成功', 'errcode' => 0, 'dataid' => $people->id.'-'.$people->'reaptcode')));
+            }else{
+                die(json_encode(array('status' => 'err', 'msg' => '登录失败', 'errcode' => 0)));
+            }
+        }
+
+        \View::set_global($params);
+
+        $this->template->content = \View::forge("logins");
+    }
+
 
 	public function action_404(){
 		$params = array(
@@ -231,21 +140,4 @@ class Controller_Home extends \Controller_BaseController{
 		return \Response::forge(\View::forge('error/error_msg'));
 	}
 
-	/**
-	* 创建登录资料及会员资料
-	*/
-	private function create_user($data, $member = array()){
-		$result = \Model_User::do_create($data);
-    	if($result['status'] == 'succ'){
-    		$base = array(
-				'no' => time(),
-				'status' => 'NONE',
-				'reg_from' => 'qq'
-			);			    		
-    		\Session::set_flash('msg', array('status' => 'succ', 'msg' => '注册成功', 'errcode' => 0));
-    	} else {
-    		\Session::set_flash('msg', array('status' => 'err', 'msg' => $result['msg'], 'errcode' => 20));
-    	}
-    	return $result;
-	}
 }

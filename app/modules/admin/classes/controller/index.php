@@ -39,6 +39,8 @@ class Controller_Index extends Controller_BaseController{
             'menu' =>'setting'
 		);
 
+        \Response::redirect('/admin/people/index?check=fafei');
+        return;
         if(\input::method() == 'GET'){
 
         }else if(\input::method() == 'POST'){

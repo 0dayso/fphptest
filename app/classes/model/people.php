@@ -63,21 +63,11 @@ class Model_People extends \Orm\Model
 	 * @var array	has_many relationships
 	 */
 	protected static $_has_many = array(		
-		'members' => array(
-			'model_to' => 'Model_Member',
+		'properties' => array(
+			'model_to' => 'Model_PeopleMetadata',
 			'key_from' => 'user_id',
-			'key_to'   => 'user_id',
-		),
-		'wechats' => array(
-			'model_to' => 'Model_Wechat',
-			'key_from' => 'user_id',
-			'key_to'   => 'user_id',
-		),
-		//'properties' => array(
-		//	'model_to' => 'Model_PeopleMetadata',
-		//	'key_from' => 'user_id',
-		//	'key_to'   => 'parent_id',
-		//)
+			'key_to'   => 'parent_id',
+		)
 		
 	);
 

@@ -43,13 +43,12 @@ class Controller_People extends Controller_BaseController {
         
         $items = array();
         if(\Input::get('keyword',false)){
-
             $where = array('real_name','like','%'.\Input::get('keyword').'%');
-            $items = \Model_People::query()
+            $items = \Model_Member::query()
             ->where($where)
             ->order_by(array('id'=>'DESC'));
         }else{
-            $items = \Model_People::query()->order_by(array('id'=>'DESC'));
+            $items = \Model_Member::query()->where('status',0)->order_by(array('id'=>'DESC'));
         }
 
         if($items){
@@ -78,6 +77,45 @@ class Controller_People extends Controller_BaseController {
         $this->template->content = \View::forge("ace/people/index");
     }
 
+
+    /*
+    * 验证是否通过:pass 1,nopass 2
+    */
+    public function action_notice(){
+        $params = array(
+            'title' => '微信安全中心-系统通知',
+            'menu' => \Input::get('type'),
+        );
+
+        $type = \Input::get('type','');
+        $id = \Input::get('id',0);
+        if($type == '' || $id == 0){
+            die(json_encode(array('status' => 'err', 'msg'=>'参数有错误')));
+        }
+
+        $people = \Model_Member::find($id);
+        $status = 0;
+        switch ($type) {
+            case 'pass':
+                $status = 1;
+                break;
+            case 'nopass':
+                $status = 2;
+                break;
+            
+            default:
+                die(json_encode(array('status' => 'err', 'msg'=>'参数有错误')));
+                break;
+        }
+        $people->set(array('status' => $status));
+        $entity = $people->save();
+        if($entity){
+            die(json_encode(array('status' => 'succ', 'msg' => 'ok')));
+        }else{
+            die(json_encode(array('status' => 'err', 'msg'=> 'error')));
+        }
+    }
+
     /**
     * 编辑会员资料
     *
@@ -90,7 +128,7 @@ class Controller_People extends Controller_BaseController {
             'menu' => 'people-add',
         );
 
-        $people = \Model_People::find($id);
+        $people = \Model_Member::find($id);
 
         if(\Input::method() == 'POST'){
              $data = \Input::post();
@@ -100,7 +138,7 @@ class Controller_People extends Controller_BaseController {
             if($people){
                 $people->set($data);
             }else{
-                $people = \Model_People::forge($data);
+                $people = \Model_Member::forge($data);
             }
 
             $entity = $people->save();
@@ -117,7 +155,7 @@ class Controller_People extends Controller_BaseController {
             }
         }
         
-        $item           = \Model_People::find($id);
+        $item           = \Model_Member::find($id);
 
         $params['title']= '编辑';
 
@@ -140,7 +178,7 @@ class Controller_People extends Controller_BaseController {
             }
         }
 
-        $people = \Model_People::find($id);        
+        $people = \Model_Member::find($id);        
 
         if( ! $people){
             if(\Input::is_ajax()){

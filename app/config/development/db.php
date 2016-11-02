@@ -12,7 +12,7 @@ return array(
 			'port'       => '3306',
 			'database'   => 'wechat_copy',
 			'username'   => 'root',
-			'password'   => 'KHcM2UAThharRWbW',
+			'password'   => 'pensee608',
 			'persistent' => false,
 			'compress'   => false,
 		),

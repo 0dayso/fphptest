@@ -11,7 +11,9 @@
 </head>              
 <body>
     <?php echo isset($content) ? $content : ""; ?>
-    <script type="text/javascript" language="javascript">
+</body>
+
+<script type="text/javascript">
     function iFrameHeight() {
 
         var ifm = document.getElementById("iframepage");
@@ -25,13 +27,8 @@
         }
 
     }
-    </script>
-</body>
-<!--footer结束-->
-<script>
 $(document).ready(function(){
   $(window).resize(function(){
-     //console.log('屏幕变化');
      autoHeight();
   });
   $('.carousel-inner .item img').load(function(){

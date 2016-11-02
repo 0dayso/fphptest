@@ -29,33 +29,13 @@ class Controller_Ucenter extends Controller_BaseController {
 
     public function before() {
         parent::before();
+        echo \Auth::get_user()->group_id.'J';
         if(!\Auth::check()){
-            \Response::redirect("/web/index/index");
+        	die('........');
+            \Response::redirect("/web/home/login");
         }
-
-        \View::set_global($params);
-    }
-    
-    public function action_index($id = 0) {
-
-        $params = array(
-            'title' => '个人中心',
-        );
-
-
-        \View::set_global($params);
-
-        $this->template->content = \View::forge("ucenter/index");
-    }
-
-    public function action_login(){
-        $params = array(
-            'title' => '微信安全中心-登录',
-        );
-
-        \View::set_global($params);
-
-        $this->template->content = \View::forge("ucenter/login");
+        //$params = array();
+        //\View::set_global($params);
     }
 
 }
