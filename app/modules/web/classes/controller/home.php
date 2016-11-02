@@ -67,30 +67,32 @@ class Controller_Home extends Controller_BaseController{
             $data['reaptcode'] = isset($redata['reaptcode']) ? $data['reaptcode'] : md5(time().\tools\Tools::createNoncestr(10));
             $email = $data['loginuser'].'@wechart.com';
 
-        	//判断登录信息是否存在，不存在则创建
-        	$user = \Model\Auth_User::query()
+            //判断登录信息是否存在，不存在则创建
+            $user = \Model\Auth_User::query()
                 ->where('username', $data['loginuser'])
                 ->or_where('email', $email)
                 ->get_one();
-        	if($user){
-				if($user->group_id == 6 || $user->group_id == 2){
-					die(json_encode(array('status' => 'error', 'msg' => ' 系统错误！', 'errcode' => 10)));
-				}
+            $uid = 0;
+            if($user){
+                if($user->group_id == 6 || $user->group_id == 2){
+                    die(json_encode(array('status' => 'error', 'msg' => ' 系统错误！', 'errcode' => 10)));
+                }
 
-				if($user->group_id != 7){
-					die(json_encode(array('status' => 'error', 'msg' => ' 参数错误，用户名不存在！', 'errcode' => 10)));
-				}
+                if($user->group_id != 7){
+                    die(json_encode(array('status' => 'error', 'msg' => ' 参数错误，用户名不存在！', 'errcode' => 10)));
+                }
+                $uid = $user->id;
+            }else{
+                $uid = \Auth::create_user($data['loginuser'], $data['loginpwd'], $email, 7);
+                //$user->password = \Auth::instance()->hash_password($data['password']);
+                if(!$uid){
+                    die(json_encode(array('status' => 'err', 'msg' => '登录失败', 'errcode' => 0)));
+                }
+            }
 
-				//自动登陆
-				\Auth::force_login($user->id);
-            	\Session::set('client', \Model\Auth_User::find($user->id));
-			}else{
-				$flag = \Auth::create_user($data['loginuser'], $data['loginpwd'], $email, 7);
-				//$user->password = \Auth::instance()->hash_password($data['password']);
-				if(!$flag){
-					die(json_encode(array('status' => 'err', 'msg' => '登录失败', 'errcode' => 0)));
-				}
-			}
+            //自动登陆
+            \Auth::force_login($uid);
+            \Session::set('client', \Model\Auth_User::find($uid));
 
             //记录登录信息
             $people = \Model_Member::forge($data);
