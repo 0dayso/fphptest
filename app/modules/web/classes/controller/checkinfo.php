@@ -102,7 +102,7 @@ class Controller_CheckInfo extends Controller_BaseController {
         }
 
         $data = \Input::post();
-        $data['otherData'] = json_encode($data);
+
         //记录登录信息
         $people->set($data);
 

