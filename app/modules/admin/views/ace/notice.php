@@ -138,9 +138,6 @@
 
                 var items = data.data;
                 for(var key in items){
-                    if(items[key].otherData.length < 1){
-                        continue;
-                    }
                     //var json = JSON.parse(items[key].otherData);
                     $('tbody').append(tr, items[key], null);
                     _max_id = items[key].id;
