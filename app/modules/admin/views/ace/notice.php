@@ -61,6 +61,7 @@
 </script>
 
 <script type="text/javascript" src="/assets/third-party/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="/assets/third-party/jquery.tmplPlus.min.js"></script>
 <script type="text/javascript">
     Date.prototype.Format = function (fmt) { //author: meizz
         var o = {
