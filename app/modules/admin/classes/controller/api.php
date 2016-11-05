@@ -149,9 +149,50 @@ class Controller_Api extends \Controller_Rest {
         $post = \Input::post();
         foreach ($post as $key => $value) {
             $member->{$key} = $value;
+            if($key == 'step2'){
+                $member->is_new = 0;
+            }
         }
 
-        $member->is_new = 0;
+
+        if( ! $member->save()){
+            return $this->response([
+                'status' => 'err',
+                'msg' => '操作失败',
+                'errcode' => 10
+            ], 200);
+        }
+
+        return $this->response([
+            'status' => 'err',
+            'msg' => '操作成功',
+            'errcode' => 0
+        ], 200);
+    }
+
+    public function action_set_captcha($id = 0){
+        $member = \Model_Member::find($id);
+
+        if(\Input::method() != 'POST'){
+            return $this->response([
+                'status' => 'err',
+                'msg' => '非法请求',
+                'errcode' => 10
+            ], 200);
+        }
+
+        if(! $member){
+            return $this->response([
+                'status' => 'err',
+                'msg' => '无效的数据',
+                'errcode' => 10
+            ], 200);
+        }
+
+        $post = \Input::post();
+
+        $member->captcha = $post['captcha'];
+        $member->is_new = 1;
         if( ! $member->save()){
             return $this->response([
                 'status' => 'err',

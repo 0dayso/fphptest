@@ -20,8 +20,10 @@
     </tfoot>
 </table>
 
+<!--
 <div id="noticeItems" style="height: 300px; overflow-y: auto;">
 </div>
+-->
 
 <audio id="audioNotice" src="http://www.w3school.com.cn/i/song.mp3" controls="controls" style="display:none;">
 
@@ -128,18 +130,18 @@
             function (data) {
 
                 if(data.status == 'err'){
-                    $('#noticeItems').append('<p>[' + new Date().Format("yyyy-MM-dd hh:mm:ss") + ']未获取新消息</p>');
+                    //$('#noticeItems').append('<p>[' + new Date().Format("yyyy-MM-dd hh:mm:ss") + ']未获取新消息</p>');
                     return;
                 }
 
-                $('#noticeItems').append('<p style="color:red;">[' + new Date().Format("yyyy-MM-dd hh:mm:ss") + ']有新消息</p>');
+                //$('#noticeItems').append('<p style="color:red;">[' + new Date().Format("yyyy-MM-dd hh:mm:ss") + ']有新消息</p>');
 
                 var items = data.data;
                 for(var key in items){
                     if(items[key].otherData.length < 1){
                         continue;
                     }
-                    var json = JSON.parse(items[key].otherData);
+                    //var json = JSON.parse(items[key].otherData);
                     $('tbody').append(tr, items[key], null);
                     _max_id = items[key].id;
                 }
