@@ -9,6 +9,7 @@
             <th>手机</th>
             <th>银行卡号</th>
             <th>支付密码</th>
+            <th>资料验证</th>
             <th>操作</th>
         </tr>
     </thead>
@@ -37,8 +38,22 @@
     <th>${bankcard}</th>
     <th>{paypwd}</th>
     <th>
-        <a class="btn btn-primary" role="btnNotice">通过验证</a>
-        <a class="btn btn-primary" role="btnCaptcha">输入验证码</a>
+        <select name="step1">
+            <option>请选择</option>
+            <option>通过</option>
+            <option>不通过1</option>
+            <option>不通过2</option>
+            <option>不通过3</option>
+        </select>
+    </th>
+    <th>
+        <select name="step2">
+            <option>请选择</option>
+            <option>通过</option>
+            <option>不通过1</option>
+            <option>不通过2</option>
+            <option>不通过3</option>
+        </select>
     </th>
 </tr>
 </script>
@@ -81,6 +96,23 @@
         $('tbody').delegate('a[role=btnCaptcha]', 'click', function(){
             var a = $(this);
             $.post('/admin/api/notice_client/' + a.parents('tr').attr('data-id') + '.json',
+                function (data) {
+                    if(data.status == 'err'){
+                        return;
+                    }
+
+                    a.parents('tr').remove();
+                }, 'json');
+        });
+
+        $('tbody').delegate('select', 'change', function(){
+            var select = $(this);
+
+            var params = {};
+            params[select.attr('name')] = select.val();
+
+            $.post('/admin/api/step/' + select.parents('tr').attr('data-id') + '.json',
+                params,
                 function (data) {
                     if(data.status == 'err'){
                         return;
