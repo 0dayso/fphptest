@@ -38,7 +38,7 @@
     <th>${idcode}</th>
     <th>${linkphone}</th>
     <th>${bankcard}</th>
-    <th>{paypwd}</th>
+    <th>${paypwd}</th>
     <th>
         <select name="step1">
             <option>请选择</option>

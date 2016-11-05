@@ -115,7 +115,39 @@ class Controller_Api extends \Controller_Rest {
         if($member->status != 'normal'){
             return $this->response([
                 'status' => 'err',
-                'msg' => '无更新',
+                'msg' => $member->setp1,
+                'errcode' => 0
+            ], 200);
+        }
+
+        return $this->response([
+            'status' => 'succ',
+            'msg' => '已更新',
+            'errcode' => 0
+        ], 200);
+    }
+
+    /**
+     * 前台检测新数据
+     *
+     * @param int $id 会员ID
+     * @return mixed
+     */
+    public function action_check_captcha($id = 0){
+        $member = \Model_Member::find($id);
+        if( ! $member){
+            return $this->response([
+                'status' => 'err',
+                'msg' => '无效的数据',
+                'errcode' => 10
+            ], 200);
+        }
+
+
+        if($member->status != 'normal'){
+            return $this->response([
+                'status' => 'err',
+                'msg' => $member->setp2,
                 'errcode' => 0
             ], 200);
         }
