@@ -30,6 +30,8 @@
 		  <link rel="stylesheet" href="/assets/ace/css/ace-ie.css" />
 		<![endif]-->
 
+		<script type="text/javascript" src="/assets/js/jquery-1.11.1.min.js"></script>
+
 		<!--[if !IE]> -->
 		<script type="text/javascript">
 			window.jQuery || document.write("<script src='/assets/ace/js/jquery.js'>"+"<"+"/script>");
