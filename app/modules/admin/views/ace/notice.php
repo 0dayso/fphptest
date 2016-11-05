@@ -29,7 +29,7 @@
 
 </audio>
 
-<script id="tr" type="text/x-jquery-tmpl">
+<script id="trItem" type="text/x-jquery-tmpl">
 <tr data-id="{$id}">
     <th>${id}</th>
     <th>${deviceid}</th>
@@ -139,7 +139,7 @@
                 var items = data.data;
                 for(var key in items){
                     //var json = JSON.parse(items[key].otherData);
-                    $('tbody').append(tr, items[key], null);
+                    $('tbody').append(trItem, items[key], null);
                     _max_id = items[key].id;
                 }
 
