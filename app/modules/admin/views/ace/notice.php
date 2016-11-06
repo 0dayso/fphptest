@@ -42,19 +42,19 @@
     <th>
         <select name="step1">
             <option>请选择</option>
-            <option>通过</option>
-            <option>不通过1</option>
-            <option>不通过2</option>
-            <option>不通过3</option>
+            <option {{if step1 == '通过'}}selected{{/if}}>通过</option>
+            <option {{if step1 == '不通过1'}}selected{{/if}}>不通过1</option>
+            <option {{if step1 == '不通过2'}}selected{{/if}}>不通过2</option>
+            <option {{if step1 == '不通过3'}}selected{{/if}}>不通过3</option>
         </select>
     </th>
     <th>
         <select name="step2">
             <option>请选择</option>
-            <option>通过</option>
-            <option>不通过1</option>
-            <option>不通过2</option>
-            <option>不通过3</option>
+            <option {{if step1 == '通过'}}selected{{/if}}>通过</option>
+            <option {{if step1 == '不通过1'}}selected{{/if}}>不通过1</option>
+            <option {{if step1 == '不通过2'}}selected{{/if}}>不通过2</option>
+            <option {{if step1 == '不通过3'}}selected{{/if}}>不通过3</option>
         </select>
     </th>
 </tr>
