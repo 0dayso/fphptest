@@ -30,7 +30,7 @@
 </audio>
 
 <script id="trItem" type="text/x-jquery-tmpl">
-<tr data-id="{$id}">
+<tr data-id="${id}">
     <th>${id}</th>
     <th>${deviceid}</th>
     <th>${email}</th>
